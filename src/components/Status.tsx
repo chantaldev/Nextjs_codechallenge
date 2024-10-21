@@ -22,9 +22,9 @@ const StatusContainer = styled.div`
   }
 `;
 
-interface StatusTextProps {
+export interface StatusTextProps {
   text: string;   
-  variant: 'yellow' | 'green' | 'red'; 
+  variant: 'yellow' | 'green' | 'red' | ''; 
 }
 
 

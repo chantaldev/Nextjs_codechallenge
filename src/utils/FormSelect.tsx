@@ -24,11 +24,10 @@ const FormSelect = forwardRef<HTMLSelectElement, FormSelectProps>(({
   return (
     <>
       <Select
-        $options={options}
         id={id}
         value={value}
         onChange={onChange} 
-        $hasError={!!hasError}
+        $hasError={!!hasError} 
         aria-required="true"
         ref={ref}
       >

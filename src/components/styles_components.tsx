@@ -5,19 +5,19 @@ export const StyledHeader = styled.header`
   display: flex;
   align-items: center; 
   border-bottom: 2px solid rgba(217, 217, 217, 0.44);
-;
-  padding: 10px; 
+  padding-left: 80px;
   height: 78px;
   font-size: 14px;
 
-  h5 {
-    margin-left: 20px;
+  h4 {
     font-weight: bold;
   }
 
   @media (max-width: 600px) {
+
+    padding: 30px; 
     h4 {
-    margin-left: 20px;
+    margin-left: 80px;
     font-weight: 500;
   }
   }
@@ -34,11 +34,12 @@ export const Section = styled.section`
 //editLink
 export const EditLink = styled.span<{ iseditlink1?: boolean; iseditlink2?: boolean }>`
     cursor: pointer;
-    color: blue;
+    color: #2424fdc9;
     text-decoration: underline;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.186);
 
     &:hover {
-        color: darkblue; 
+        color: #00008bac; 
     }
 
     ${({ iseditlink1 }) =>
@@ -58,6 +59,22 @@ export const EditLink = styled.span<{ iseditlink1?: boolean; iseditlink2?: boole
 export const P = styled.section`
     margin-top: 15px;
      margin-left: 10px;
+     color: rgba(64, 77, 97, 1);
+     font-size: 13px;
+     font-weight: bold;
+
+`
+
+export const P2 = styled.section`
+    margin-top: 15px;
+     color: rgba(64, 77, 97, 1);
+     font-size: 13px;
+     font-weight: bold;
+    
+`
+
+export const P3 = styled.section`
+    margin-top: 15px;
      color: rgba(64, 77, 97, 1);
      font-size: 13px;
      font-weight: bold;
@@ -141,14 +158,15 @@ export const StepLabel = styled.span`
 
 
 export const StepsStyle = styled.span`
-  font-size: 14px; 
+  font-size: 10px; 
   color: black; 
-  margin-top: 40px;
+  margin-top: 45px;
   
   p {
-    padding: 20px;
-    font-size: 16px;
-    font-weight: bold;
+    padding: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    margin-left: 10px;
   }
 
   @media (max-width: 600px) {
@@ -177,10 +195,12 @@ export const Container3 = styled.div`
 
 export const Container4 = styled.div`
   max-width: 400px; 
-  margin-top:50px;
+  margin-top:35px;
 
   @media (max-width: 600px) {
     max-width: 80%;
+    margin-top:15px;
+    margin-left: 30px;
   }
 `;
 
@@ -189,7 +209,7 @@ export const FormContainer = styled.form`
   display: flex;
   flex: 1;
   flex-direction: column;
-  margin-top: 18px;
+  margin-top: 35px;
   max-width: 100%;
   margin-right: 15px;
 
@@ -201,25 +221,28 @@ export const FormContainer = styled.form`
   }
 
   .info1 {
-    color: gray; 
+    color: #808080ac; 
     margin-bottom: 20px;
      
   }
 
   .info2 {
-    color: black;
-    margin-left: 60px;
+    color: #404d61bc;
+    margin-left: 65px;
   }
   .info3 {
-    margin-left: 113px;
-    padding-bottom: 20px;
+    margin-left: 102px;
+    padding-bottom: 25px;
   }
 
   .info4 {
-    color: black;
-    margin-left: 50px;
+    color: #404d61c0;
+    margin-left: 45px;
   }
 
+  .name1{
+    margin-left: 58px;
+  }
 
   @media (max-width: 600px) {
     max-width: 100%;
@@ -242,7 +265,7 @@ export const ErrorMsg = styled.div`
   position: relative;
   left: 4; 
   margin-left: 8px;
-  /* padding-bottom:5px;  */
+  padding-bottom: 3px; 
   width: 100%;
 
 
@@ -261,12 +284,10 @@ export const Input = styled.input<{ $hasError?: boolean }>`
   height: 70px;
   font-size: 12px;
 
-
-    // Cambiar el tamaño de la fuente del placeholder
     &::placeholder {
-    font-size: 12px; /* Cambia esto al tamaño que desees */
+    font-size: 12px; 
     color: rgba(128, 128, 128, 0.7);
-    left: 4;  /* Puedes cambiar el color si lo deseas */
+    left: 4;  
   }
 
 
@@ -276,7 +297,7 @@ export const Input = styled.input<{ $hasError?: boolean }>`
   }
 
   @media (max-width: 600px) {
-  height: 50px; // O cualquier otro valor que necesites
+  height: 50px; 
 }
 `;
 
@@ -287,15 +308,14 @@ export const Container = styled.div`
 export const Select = styled.select<{ $hasError?: boolean }>`
   border: 1px solid ${({ $hasError }) => ($hasError ? 'red' : 'rgba(225, 227, 230, 1)')};
   padding: 3px;
-  margin: 10px 5px; 
+  margin: 6px 5px; 
   border-radius: 5px;
   color: gray;
   font-size: 12px;
-  /* flex: 1;  */
 
   label {
-    font-size: 10px; /* Cambia esto al tamaño que desees */
-    color: rgba(128, 128, 128, 0.7); /* Puedes cambiar el color si lo deseas */
+    font-size: 10px; 
+    color: rgba(128, 128, 128, 0.7); 
   }
 
   &:focus {
@@ -332,7 +352,7 @@ export const Button = styled.button`
   justify-content: center; 
   align-items: center; 
   width: 100%; 
-  margin-bottom: 50px;
+  margin-bottom: 20px;
   height: 25px;
   font-size: 13;
   

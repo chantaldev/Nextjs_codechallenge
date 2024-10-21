@@ -3,14 +3,14 @@
 import React from 'react';
 import { StyledHeader } from './styles_components';
 import StatusText from './Status';
-import { useFormContext } from '../context/formContext';
+import { useFormStore } from '../context/formContext';
 
 export default function Nav() {
-  const { status } = useFormContext(); 
+  const { status } = useFormStore(); 
 
   return (
     <StyledHeader>
-          <h5>New Company</h5>
+          <h4>New Company</h4>
           {status.text && <StatusText text={status.text} variant={status.variant} />}
     </StyledHeader>
   );

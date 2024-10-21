@@ -36,8 +36,8 @@ const FormInput = forwardRef<HTMLInputElement, FormInputProps>(({
         ref={ref} 
       />
       {errorMsg && type === 'email' && ( 
-        <Container3 style={{ display: 'flex', alignItems: 'center', marginTop: '5px' }}>
-          <MdWarning style={{ marginRight: '7px', marginBottom: '15px', color: 'red' }} />
+        <Container3 style={{ display: 'flex', alignItems: 'center', marginTop: '10px' }}>
+          <MdWarning style={{ marginLeft: '6px', marginBottom: '5px', color: 'red' }} />
           <ErrorMsg>{errorMsg}</ErrorMsg>
         </Container3>
       )}

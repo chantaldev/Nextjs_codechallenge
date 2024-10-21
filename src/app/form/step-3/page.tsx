@@ -1,9 +1,9 @@
 "use client";
 import React, { useEffect } from 'react';
 
-import { FormContainer, EditLink, Container4 } from '../../../components/styles_components';
+import { FormContainer, EditLink, Container4, P2, P3} from '../../../components/styles_components';
 import Button from '../../../components/Button';
-import { useFormContext } from '../../../context/formContext';
+import { useFormStore } from '../../../context/formContext';
 import { sendFormData } from '../../../services/companyService';
 import ShowConfirmation from '../../../components/ShowConfirmation';
 import { statusOptions } from '../../../constants/staticOptions';
@@ -28,7 +28,7 @@ const Form3 = () => {
     setCurrentStep,
     setCompletedStepIndex,
     setErrors,
-  } = useFormContext();
+  } = useFormStore();
 
   const handleEditClick = (step: string) => {
     router.push(`/form/${step}`);
@@ -116,34 +116,35 @@ const Form3 = () => {
     <Container4>
       <FormContainer>
         <div style={{ marginBottom: '0px' }}>
-          <p className='category'>
+          <P2 className='category'>
             <span>Business Structure</span>
             {!hide && (
               <EditLink style={{ marginLeft: '15px', fontSize: '13px' }}  onClick={() => handleEditClick('step-1')}>Edit</EditLink>
             )}
-          </p>
-          <p className='info1'>Name: <span className='info2 name'>{newCompanyData.companyName}</span></p>
-          <p className='info1'>Address:
+          </P2>
+          <P3 className='info1'>Name: <span className='info2 name1'>{newCompanyData.companyName}</span></P3>
+          <P3 className='info1'>Type: <span className='info2'>{newCompanyData.companyType}</span></P3>
+          <P3 className='info1'>Address:
             <span className='info4'>{newCompanyData.address1} <br />
               <span className='info3'>{newCompanyData.address2} <br />
                 <span className='info3'>{newCompanyData.state}, {newCompanyData.zip}</span>
               </span>
             </span>
-          </p>
+          </P3>
         </div>
 
         <div>
-          <p className='category'>
+          <P2 className='category'>
             <span>Contact Info</span>
             {!hide && (
-              <EditLink style={{ marginLeft: '60px', fontSize: '13px' }}  onClick={() => handleEditClick('step-2')}>Edit</EditLink>
+              <EditLink style={{ marginLeft: '60px', fontSize: '12px' }}  onClick={() => handleEditClick('step-2')}>Edit</EditLink>
             )}
-          </p>
-          <p className='info1 name'>Name:
-            <span className='info2'>{newCompanyData.firstName} {newCompanyData.lastName}</span></p>
-          <p className='info1'>Email:<span className='info2'>{newCompanyData.email}</span></p>
-          <p className='info1'> Phone:
-            <span className='info2'>{newCompanyData.phone}</span></p>
+          </P2>
+          <P3 className='info1 name'>Name:
+            <span className='info2'>{newCompanyData.firstName} {newCompanyData.lastName}</span></P3>
+          <P3 className='info1'>Email:<span className='info2'>{newCompanyData.email}</span></P3>
+          <P3 className='info1'> Phone:
+            <span className='info2'>{newCompanyData.phone}</span></P3>
         </div>
 
         {/* Renderiza el mensaje de confirmación arriba si es éxito */}

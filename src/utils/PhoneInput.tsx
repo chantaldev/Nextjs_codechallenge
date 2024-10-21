@@ -54,7 +54,6 @@ const countries = [
   }
 ];
 
-
 const Container = styled.div`
   display: flex;
   align-items: center;
@@ -77,14 +76,14 @@ const FlagButton = styled.button`
   border: none;
   cursor: pointer;
   padding: 0;
-  margin-right: 5px; 
+  margin-right: 5px;
   display: flex;
   align-items: center;
 `;
 
 const FlagIcon = styled.img`
-  width: 20px; 
-  height: 15px; 
+  width: 20px;
+  height: 15px;
 `;
 
 const CountryCode = styled.span`
@@ -93,18 +92,22 @@ const CountryCode = styled.span`
 
 const PhoneInputField = styled.input`
   flex: 1;
-  border: none; 
-  outline: none; 
+  border: none;
+  outline: none;
   padding: 5px;
 
   ::placeholder {
-    color: #888; 
+    color: #888;
   }
 `;
 
-const Dropdown = styled.div`
+interface DropdownProps {
+  visible: boolean;
+}
+
+const Dropdown = styled.div<DropdownProps>`
   position: absolute;
-  top: 100%; 
+  top: 100%;
   left: 0;
   background-color: white;
   border: 1px solid #ccc;
@@ -119,22 +122,26 @@ const DropdownItem = styled.div`
   padding: 8px;
   cursor: pointer;
   &:hover {
-    background-color: #f0f0f0; 
+    background-color: #F0F0F0;
   }
 `;
 
 const PhoneInput = () => {
-  const [selectedCountry, setSelectedCountry] = useState(countries[0]); 
-  const [phoneNumber, setPhoneNumber] = useState(''); 
-  const [dropdownVisible, setDropdownVisible] = useState(false); 
+  const [selectedCountry, setSelectedCountry] = useState(countries[0]);
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [dropdownVisible, setDropdownVisible] = useState(false);
 
   const toggleDropdown = () => {
     setDropdownVisible(!dropdownVisible);
   };
 
-  const handleCountrySelect = (country) => {
+  const handleCountrySelect = (country: {
+    name: string;
+    phone_code: string;
+    flag_url: string;
+  }) => {
     setSelectedCountry(country);
-    setDropdownVisible(false); 
+    setDropdownVisible(false);
   };
 
   return (

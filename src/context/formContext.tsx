@@ -1,14 +1,7 @@
-"use client";
-
-import React, { useCallback, useEffect, createContext, useContext, useState, ReactNode } from 'react';
-import {
-  newDealInitialValuesSchema,
-  newCompanyInitialValuesType,
-  NewCompanyType
-} from '../schemas/schemas'
-import  StatusTextProps  from '../components/Status'
-
-
+import { create } from 'zustand';
+import { createJSONStorage, persist } from 'zustand/middleware';
+import { newCompanyInitialValuesType, NewCompanyType } from '../schemas/schemas';
+import { StatusTextProps } from '../components/Status';
 
 const defaultCompany: newCompanyInitialValuesType = {
   companyName: '',
@@ -24,166 +17,91 @@ const defaultCompany: newCompanyInitialValuesType = {
 };
 
 type FormErrors = {
-  firstName?: string; 
-  lastName?: string;  
-  email?: string;     
-  phone?: string;     
-  companyName?: string; 
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  phone?: string;
+  companyName?: string;
   companyType?: string;
-  address1?: string; 
-  city?: string; 
+  address1?: string;
+  city?: string;
   state?: string;
-  zip?: string; 
+  zip?: string;
 };
 
-
-const LOCAL_STORAGE_KEY = 'hola';
-
-
-type AddCompanyContextType = {
+type FormState = {
   newCompanyData: newCompanyInitialValuesType;
-  updateNewCompanyDetails: (companyDetails: Partial<NewCompanyType>) => void;
-  dataLoaded: boolean;
-  resetLocalStorage: () => void;
-  setStepCompleted: (stepName: string) => void;
   currentStep: string;
-  setCurrentStep: (step: string) => void;
-  setCompletedStepIndex: (index: number) => void; 
   completedStepIndex: number;
-  status: StatusTextProps,
-  setStatus: React.Dispatch<React.SetStateAction<StatusTextProps>>;
-  errors: FormErrors; 
-  setErrors: React.Dispatch<React.SetStateAction<FormErrors>>;
-  selectedType: string; 
-  setSelectedType: React.Dispatch<React.SetStateAction<string>>;
+  status: StatusTextProps;
+  errors: FormErrors;
+  selectedType: string;
   showConfirmation: boolean;
-  setShowConfirmation: React.Dispatch<React.SetStateAction<boolean>>;
   apiMessage: string;
-  setApiMessage: React.Dispatch<React.SetStateAction<string>>;
   loading: boolean;
-  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   success: boolean;
-  setSuccess: React.Dispatch<React.SetStateAction<boolean>>;
   buttonText: string;
-  setButtonText: React.Dispatch<React.SetStateAction<string>>;
-
-  hide: boolean; 
-  setHide: React.Dispatch<React.SetStateAction<boolean>>; 
+  hide: boolean;
   formCompleted: boolean;
-  setFormCompleted: React.Dispatch<React.SetStateAction<boolean>>;
+  updateNewCompanyDetails: (companyDetails: Partial<NewCompanyType>) => void;
+  setCurrentStep: (step: string) => void;
+  setCompletedStepIndex: (index: number) => void;
+  setStatus: (status: StatusTextProps) => void;
+  setErrors: (errors: FormErrors) => void;
+  setSelectedType: (type: string) => void;
+  setShowConfirmation: (show: boolean) => void;
+  setApiMessage: (message: string) => void;
+  setLoading: (loading: boolean) => void;
+  setSuccess: (success: boolean) => void;
+  setButtonText: (text: string) => void;
+  setHide: (hide: boolean) => void;
+  setFormCompleted: (completed: boolean) => void;
+  resetForm: () => void;
+  resetLocalStorage: () => void; 
 };
 
-const FormContext = createContext<AddCompanyContextType | undefined>(undefined);
-
-export const FormProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [currentStep, setCurrentStep] = useState('step-1');
-  const [newFormData, setNewFormData] = useState<newCompanyInitialValuesType>(defaultCompany);
-  const [dataLoaded, setDataLoaded] = useState(false);
-  const [completedStepIndex, setCompletedStepIndex] = useState(-1);
-  const [status, setStatus] = useState<StatusTextProps>({ text: '', variant: 'yellow' });
-
-  const [hide, setHide] = useState(false)
-  const [formCompleted, setFormCompleted] = useState(false);
-  const [errors, setErrors] = useState<FormErrors>({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-  });
-    const [selectedType, setSelectedType] = useState(''); 
-
-
-const [showConfirmation, setShowConfirmation] = useState(false);
-const [apiMessage, setApiMessage] = useState('');
-const [loading, setLoading] = useState(false);
-const [success, setSuccess] = useState(false);
-const [buttonText, setButtonText] = useState("Confirm and Submit");
-
-  useEffect(() => {
-    readFromLocalStorage();
-    setDataLoaded(true);
-  }, []);
-
-  useEffect(() => {
-    if (dataLoaded) {
-      saveDataToLocalStorage(newFormData);
+export const useFormStore = create<FormState>()(
+  persist(
+    (set) => ({
+      newCompanyData: defaultCompany,
+      currentStep: 'step-1',
+      completedStepIndex: -1,
+      status: { text: '', variant: 'yellow' },
+      errors: {},
+      selectedType: '',
+      showConfirmation: false,
+      apiMessage: '',
+      loading: false,
+      success: false,
+      buttonText: 'Confirm and Submit',
+      hide: false,
+      formCompleted: false,
+      updateNewCompanyDetails: (companyDetails) =>
+        set((state) => ({
+          newCompanyData: { ...state.newCompanyData, ...companyDetails },
+        })),
+      setCurrentStep: (step) => set({ currentStep: step }),
+      setCompletedStepIndex: (index) => set({ completedStepIndex: index }),
+      setStatus: (status) => set({ status }),
+      setErrors: (errors) => set({ errors }),
+      setSelectedType: (type) => set({ selectedType: type }),
+      setShowConfirmation: (show) => set({ showConfirmation: show }),
+      setApiMessage: (message) => set({ apiMessage: message }),
+      setLoading: (loading) => set({ loading }),
+      setSuccess: (success) => set({ success }),
+      setButtonText: (text) => set({ buttonText: text }),
+      setHide: (hide) => set({ hide }),
+      setFormCompleted: (completed) => set({ formCompleted: completed }),
+      resetForm: () => set({ newCompanyData: defaultCompany }),
+      resetLocalStorage: () => {
+        set({ newCompanyData: defaultCompany });
+        localStorage.removeItem('form-storage');
+      }, // Add this function
+    }),
+    {
+      name: 'form-storage',
+      storage: createJSONStorage(() => localStorage),
+      partialize: (state) => ({ newCompanyData: state.newCompanyData }),
     }
-  }, [newFormData, dataLoaded]);
-
-  const updateNewCompanyDetails = useCallback(
-    (companyDetails: Partial<NewCompanyType>) => {
-      setNewFormData({ ...newFormData, ...companyDetails });
-    },
-    [newFormData]
-  );
-
-  const saveDataToLocalStorage = (
-    currentCompanyData: newCompanyInitialValuesType,
-
-  ) => {
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(currentCompanyData));
-  };
-
-  const readFromLocalStorage = () => {
-    const loadedDataString = localStorage.getItem(LOCAL_STORAGE_KEY);
-
-    if (!loadedDataString) return setNewFormData(defaultCompany);
-    const validated = newDealInitialValuesSchema.safeParse(
-      JSON.parse(loadedDataString)
-    );
-
-    if (validated.success) {
-      setNewFormData(validated.data);
-    } else {
-      setNewFormData(defaultCompany);
-    }
-
-
-  };
-
-  const resetLocalStorage = () => {
-    localStorage.removeItem(LOCAL_STORAGE_KEY);
-    setNewFormData(defaultCompany);
-
-  };
-
-
-  return (
-    <FormContext.Provider value={{
-      newCompanyData: newFormData,
-      updateNewCompanyDetails,
-      dataLoaded,
-      resetLocalStorage,
-      currentStep, setCurrentStep,
-      completedStepIndex, setCompletedStepIndex,
-      status, setStatus,
-      hide, setHide,
-      formCompleted, setFormCompleted,
-      errors,
-      setErrors,
-      selectedType, 
-      setSelectedType,
-      showConfirmation,
-      setShowConfirmation,
-      apiMessage,
-      setApiMessage,
-      loading,
-      setLoading,
-      success,
-      setSuccess,
-      buttonText,
-      setButtonText,
-    }}>
-      {children}
-    </FormContext.Provider>
-  );
-};
-
-export const useFormContext = () => {
-  const context = useContext(FormContext);
-  if (!context) {
-    throw new Error('useFormContext must be used within a FormProvider');
-  }
-  return context;
-};
-
+  )
+);

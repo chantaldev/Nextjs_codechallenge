@@ -18,6 +18,6 @@ const steps = [
     },
   ];
 
-  export const findCurrentStep = (path) => {
-    return steps.find(s => path.includes(s.route));
+  export const findCurrentStep = (step: string | string[]) => {
+    return steps.find(s => step.includes(s.route));
   };

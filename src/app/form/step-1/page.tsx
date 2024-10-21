@@ -7,9 +7,9 @@ import Button from '../../../components/Button';
 import FormInput from '../../../utils/FormInput';
 import FormSelect from '../../../utils/FormSelect';
 import { companyTypes, states, statusOptions } from '../../../constants/staticOptions';
-import { submitForm1 } from '../step-1/actions';
+import { FormErrors, submitForm1 } from '../step-1/actions';
 import focusFirstErrorInput from '../../../utils/focusUtils';
-import { useFormContext } from '../../../context/formContext';
+import { useFormStore } from '../../../context/formContext';
 import { findCurrentStep } from '../../../utils/findCurrentStep'
 
 
@@ -25,7 +25,7 @@ export default function Form1() {
         setCompletedStepIndex,
         errors, setErrors,
         setSelectedType
-    } = useFormContext();
+    } = useFormStore();
 
     const [formData1, setFormData1] = useState({
         companyName: newCompanyData?.companyName || '',
@@ -102,21 +102,23 @@ export default function Form1() {
             state: formData1.state,
         });
 
+        const newErrors: FormErrors = result.errors || {
+            companyName: '',
+            companyType: '',
+            address1: '',
+            city: '',
+            state: '',
+            zip: '',
+        };
+
         if (result.success) {
             setCompletedStepIndex(0);
             router.push(AddFormRoutes.CONTACT_INFO);
-            setErrors({
-                companyName: '',
-                companyType: '',
-                address1: '',
-                city: '',
-                state: '',
-                zip: '',
-            });
+            setErrors(newErrors);
         } else {
-            setErrors(result.errors);
-            focusFirstErrorInput(result.errors, inputRefs);
-        }
+            setErrors(newErrors);
+            focusFirstErrorInput({...newErrors}, inputRefs)
+        };
     };
 
     return (

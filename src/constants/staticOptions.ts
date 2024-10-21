@@ -65,8 +65,14 @@ export const states = [
   { value: 'WY', label: 'Wyoming' }
 ];
 
-export const statusOptions = [
+type StatusOption = {
+  status: string;
+  variant: 'yellow' | 'green' | 'red' | "";
+};
+
+export const statusOptions: StatusOption[] = [
   { status: 'In Progress', variant: 'yellow' },
   { status: 'Success', variant: 'green' },
   { status: 'Error', variant: 'red' },
+  { status: '', variant: '' },
 ];

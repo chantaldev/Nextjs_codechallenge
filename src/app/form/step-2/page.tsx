@@ -1,14 +1,14 @@
 "use client";
 
-import 'react-international-phone/style.css';
+// import 'react-international-phone/style.css';
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { FormContainer, AddressContainer, InputWrapper, Container, P } from '../../../components/styles_components';
 import Button from '../../../components/Button';
 import { submitForm2 } from '../step-2/actions';
 import FormInput from '../../../utils/FormInput';
-import { AddFormRoutes } from '../../../types';
+import { AddFormRoutes, FormErrors } from '../../../types';
 import { useRouter } from 'next/navigation';
-import { useFormContext } from '../../../context/formContext';
+import { useFormStore } from '../../../context/formContext';
 import CustomPhoneInput from '../../../utils/CustomPhoneInput'; 
 import { statusOptions } from '../../../constants/staticOptions';
 import focusFirstErrorInput from '../../../utils/focusUtils';
@@ -18,7 +18,7 @@ import '../../page.module.css';
 const Form2 = () => {
     const router = useRouter();
     const { newCompanyData, updateNewCompanyDetails,
-        setCurrentStep, setCompletedStepIndex, setStatus, errors, setErrors } = useFormContext();
+        setCurrentStep, setCompletedStepIndex, setStatus, errors, setErrors } = useFormStore();
 
     const [formData2, setFormData2] = useState({
         firstName: newCompanyData?.firstName || '',
@@ -42,8 +42,6 @@ const Form2 = () => {
         email: useRef<HTMLInputElement | null>(null),
         phone: useRef<HTMLInputElement | null>(null), 
     };
-
-
 
 
     const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -98,20 +96,22 @@ const Form2 = () => {
         e.preventDefault();
 
         const result = await submitForm2(formData2);
+        const newErrors: FormErrors = result.errors || {
+            firstName: '',
+            lastName: '',
+            email: '',
+            phone: '',
+        }
 
         if (result.success) {
             setCompletedStepIndex(1);
-            setErrors({
-                firstName: '',
-                lastName: '',
-                email: '',
-                phone: '',
-            });
+            setErrors(newErrors);
             router.push(AddFormRoutes.REVIEW_SUBMIT);
         } else {
-            setErrors(result.errors);
-            focusFirstErrorInput(result.errors, inputRefs);
-        }
+             ;
+            setErrors(newErrors);
+            focusFirstErrorInput({...newErrors}, inputRefs)
+        };
     };
 
     useEffect(() => {
@@ -128,7 +128,7 @@ const Form2 = () => {
     return (
         <Container>
             <FormContainer onSubmit={handleSubmit}>
-             <P> Name</P>
+             <P>Name</P>
                 <AddressContainer>
                     <InputWrapper>
                         <FormInput
@@ -172,7 +172,7 @@ const Form2 = () => {
                  <P>Phone</P>
 
                 <div className={`phone-input-container ${errors.phone ? 'error' : ''}`}>
-                    <CustomPhoneInput
+                <CustomPhoneInput
                         placeholder="Enter phone number"
                         id="phone"
                         value={formData2.phone}
@@ -180,7 +180,6 @@ const Form2 = () => {
                         onChange={handlePhoneChange}
                         inputStyle={{
                             border: errors.phone ? '1px solid red' : '1px solid gainsboro',
-                            height: '22px',
                             outline: 'none',
                             boxShadow: 'none',
                             width: '100%',

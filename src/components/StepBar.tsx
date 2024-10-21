@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { HorizontalBar, StepContainer, StepNumber, StepsStyle, BarandSteps } from '../components/styles_components';
-import { useFormContext } from '../context/formContext';
+import { useFormStore } from '../context/formContext';
 import { AddFormRoutes } from '@/types';
 import { MdCheck } from 'react-icons/md';
 
@@ -26,10 +26,10 @@ const steps = [
 ];
 
 export default function StepBar() {
-  const { currentStep, formCompleted } = useFormContext(); 
+  const { currentStep, formCompleted } = useFormStore(); 
 
 
-  const isStepCompleted = (completedStepIndex) => {
+  const isStepCompleted = (completedStepIndex: number) => {
     const currentStepIndex = steps.findIndex((step) => step.route === currentStep);
     return currentStepIndex > completedStepIndex || (completedStepIndex === 2 && formCompleted); 
   };
