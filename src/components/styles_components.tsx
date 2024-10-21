@@ -16,8 +16,10 @@ export const StyledHeader = styled.header`
   @media (max-width: 600px) {
 
     padding: 30px; 
+    
     h4 {
-    margin-left: 80px;
+    padding-left: 0px;
+    margin-left: 0px;
     font-weight: 500;
   }
   }
@@ -195,7 +197,6 @@ export const Container3 = styled.div`
 
 export const Container4 = styled.div`
   max-width: 400px; 
-  margin-top:35px;
 
   @media (max-width: 600px) {
     max-width: 80%;
@@ -246,6 +247,7 @@ export const FormContainer = styled.form`
 
   @media (max-width: 600px) {
     max-width: 100%;
+    margin-top: 15px;
 
     .info2 {
     margin-left: 31px;
@@ -254,6 +256,15 @@ export const FormContainer = styled.form`
   .info3 {
     margin-left: 94px;
     padding-bottom: 20px;
+  }
+
+  .info4 {
+    color: #404d61c0;
+    margin-left: 37px;
+  }
+
+  .type{
+    margin-left: 07px;
   }
   }
 `

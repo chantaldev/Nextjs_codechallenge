@@ -123,7 +123,7 @@ const Form3 = () => {
             )}
           </P2>
           <P3 className='info1'>Name: <span className='info2 name1'>{newCompanyData.companyName}</span></P3>
-          <P3 className='info1'>Type: <span className='info2'>{newCompanyData.companyType}</span></P3>
+          <P3 className='info1'>Type: <span className='info2 type'>{newCompanyData.companyType}</span></P3>
           <P3 className='info1'>Address:
             <span className='info4'>{newCompanyData.address1} <br />
               <span className='info3'>{newCompanyData.address2} <br />

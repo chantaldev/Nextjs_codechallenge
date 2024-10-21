@@ -1,6 +1,7 @@
 "use client";
 
-// import 'react-international-phone/style.css';
+import 'react-international-phone/style.css';
+import '../../page.module.css';
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { FormContainer, AddressContainer, InputWrapper, Container, P } from '../../../components/styles_components';
 import Button from '../../../components/Button';
@@ -13,7 +14,6 @@ import CustomPhoneInput from '../../../utils/CustomPhoneInput';
 import { statusOptions } from '../../../constants/staticOptions';
 import focusFirstErrorInput from '../../../utils/focusUtils';
 import { findCurrentStep } from '../../../utils/findCurrentStep'
-import '../../page.module.css';
 
 const Form2 = () => {
     const router = useRouter();
@@ -183,6 +183,7 @@ const Form2 = () => {
                             outline: 'none',
                             boxShadow: 'none',
                             width: '100%',
+                            height: '22px',
                         }}
                         ref={inputRefs.phone} 
                     />

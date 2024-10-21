@@ -61,9 +61,22 @@
   gap: 16px;
 }
 
+
 .react-international-phone-country-selector-button {
-  height: 10px;
-  }
+  height: 22px !important;  
+  width: 40px !important;   
+  padding: 0 !important;
+  border: 1px solid gainsboro !important;
+  border-radius: 8px !important;  
+}
+
+.react-international-phone-flag-emoji {
+  width: 18px !important;  
+  height: 15px !important;
+  margin: 0 6px !important; 
+}
+
+
 
   
 .ctas a {
