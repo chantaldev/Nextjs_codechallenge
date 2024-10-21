@@ -10,7 +10,7 @@ import FormInput from '../../../utils/FormInput';
 import { AddFormRoutes, FormErrors } from '../../../types';
 import { useRouter } from 'next/navigation';
 import { useFormStore } from '../../../context/formContext';
-import CustomPhoneInput from '../../../utils/CustomPhoneInput'; 
+import CustomPhoneInput from '../../../utils/CustomPhoneInput';
 import { statusOptions } from '../../../constants/staticOptions';
 import focusFirstErrorInput from '../../../utils/focusUtils';
 import { findCurrentStep } from '../../../utils/findCurrentStep'
@@ -40,7 +40,7 @@ const Form2 = () => {
         firstName: useRef<HTMLInputElement | null>(null),
         lastName: useRef<HTMLInputElement | null>(null),
         email: useRef<HTMLInputElement | null>(null),
-        phone: useRef<HTMLInputElement | null>(null), 
+        phone: useRef<HTMLInputElement | null>(null),
     };
 
 
@@ -83,13 +83,13 @@ const Form2 = () => {
     };
 
     useEffect(() => {
-        const path = window.location.pathname; 
+        const path = window.location.pathname;
         const step = findCurrentStep(path);
         console.log("step 2>>", step);
         if (step) {
-          setCurrentStep(step.route); 
+            setCurrentStep(step.route);
         }
-      }, [setCurrentStep]);
+    }, [setCurrentStep]);
 
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -108,9 +108,9 @@ const Form2 = () => {
             setErrors(newErrors);
             router.push(AddFormRoutes.REVIEW_SUBMIT);
         } else {
-             ;
+            ;
             setErrors(newErrors);
-            focusFirstErrorInput({...newErrors}, inputRefs)
+            focusFirstErrorInput({ ...newErrors }, inputRefs)
         };
     };
 
@@ -128,7 +128,7 @@ const Form2 = () => {
     return (
         <Container>
             <FormContainer onSubmit={handleSubmit}>
-             <P>Name</P>
+                <P>Name</P>
                 <AddressContainer>
                     <InputWrapper>
                         <FormInput
@@ -169,10 +169,10 @@ const Form2 = () => {
                     ref={inputRefs.email}
                 />
 
-                 <P>Phone</P>
+                <P>Phone</P>
 
                 <div className={`phone-input-container ${errors.phone ? 'error' : ''}`}>
-                <CustomPhoneInput
+                    <CustomPhoneInput
                         placeholder="Enter phone number"
                         id="phone"
                         value={formData2.phone}
@@ -185,7 +185,7 @@ const Form2 = () => {
                             width: '100%',
                             height: '22px',
                         }}
-                        ref={inputRefs.phone} 
+                        ref={inputRefs.phone}
                     />
                 </div>
 
