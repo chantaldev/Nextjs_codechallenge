@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { Input, ErrorMsg, Container3 } from '../components/styles_components';
 import { MdWarning } from 'react-icons/md'; 
 
@@ -13,7 +13,7 @@ interface FormInputProps {
   errorMsg?: string;
 }
 
-const FormInput: React.FC<FormInputProps> = ({
+const FormInput = forwardRef<HTMLInputElement, FormInputProps>(({
   placeholder,
   type,
   id,
@@ -22,9 +22,10 @@ const FormInput: React.FC<FormInputProps> = ({
   onChange,
   hasError,
   errorMsg,
-}) => {
+}, ref) => {
   return (
     <>
+      {label && <label htmlFor={id}>{label}</label>}
       <Input
         placeholder={placeholder}
         type={type}
@@ -32,6 +33,7 @@ const FormInput: React.FC<FormInputProps> = ({
         value={value}
         onChange={onChange}
         $hasError={!!hasError}
+        ref={ref} 
       />
       {errorMsg && type === 'email' && ( 
         <Container3 style={{ display: 'flex', alignItems: 'center', marginTop: '5px' }}>
@@ -44,6 +46,8 @@ const FormInput: React.FC<FormInputProps> = ({
       )}
     </>
   );
-};
+});
+
+FormInput.displayName = 'FormInput';
 
 export default FormInput;

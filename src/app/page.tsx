@@ -1,22 +1,10 @@
-import styles from "./page.module.css";
-import type { Metadata } from "next";
-import Link from "next/link"; 
+import { redirect } from 'next/navigation';
+import 'react-international-phone/style.css'; 
 
-
-export const metadata: Metadata = {
-  title: "Home Page",
-  description: "This is the main page of my application.",
+const HomePage = () => {
+  redirect('/form/step-1');
+  
 };
 
-export default function Home() {
-  return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-      <h1>Hello! This is the code challenge</h1>
-      <Link href="form/step-1" passHref>
-          <button>Comecemos</button>
-        </Link>
-      </main>
-    </div>
-  );
-}
+
+export default HomePage;

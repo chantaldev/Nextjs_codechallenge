@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { Select, ErrorMsg, Container } from '../components/styles_components';
 
 interface FormSelectProps {
@@ -12,7 +12,7 @@ interface FormSelectProps {
   title: string; 
 }
 
-const FormSelect: React.FC<FormSelectProps> = ({
+const FormSelect = forwardRef<HTMLSelectElement, FormSelectProps>(({
   options,
   id,
   value,
@@ -20,10 +20,9 @@ const FormSelect: React.FC<FormSelectProps> = ({
   hasError,
   title,
   errorMsg,
-}) => {
+}, ref) => {
   return (
     <>
-      
       <Select
         $options={options}
         id={id}
@@ -31,9 +30,10 @@ const FormSelect: React.FC<FormSelectProps> = ({
         onChange={onChange} 
         $hasError={!!hasError}
         aria-required="true"
+        ref={ref}
       >
         <option value="">{title}</option>
-         {options.map((option, index) => (
+        {options.map((option, index) => (
           <option key={`${option.value}-${index}`} value={option.value}>
             {option.label}
           </option>
@@ -44,8 +44,10 @@ const FormSelect: React.FC<FormSelectProps> = ({
           <ErrorMsg>{errorMsg}</ErrorMsg>
         </Container>
       )}
-       </>
+    </>
   );
-};
+});
+
+FormSelect.displayName = 'FormSelect';
 
 export default FormSelect;

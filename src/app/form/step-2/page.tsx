@@ -1,20 +1,19 @@
 "use client";
 
-import React, { useEffect, useState, useCallback } from 'react';
 import 'react-international-phone/style.css';
-
-import { FormContainer, AddressContainer, P, InputWrapper, Container } from '../../../components/styles_components'
+import React, { useEffect, useState, useCallback, useRef } from 'react';
+import { FormContainer, AddressContainer, InputWrapper, Container, P } from '../../../components/styles_components';
 import Button from '../../../components/Button';
 import { submitForm2 } from '../step-2/actions';
 import FormInput from '../../../utils/FormInput';
-import FormSelect from '../../../utils/FormSelect';
 import { AddFormRoutes } from '../../../types';
 import { useRouter } from 'next/navigation';
 import { useFormContext } from '../../../context/formContext';
-import { PhoneInput } from 'react-international-phone';
-import { statusOptions } from '../../../constants/staticOptions'
-import StyledParagraph from '@/components/StyleP';
-
+import CustomPhoneInput from '../../../utils/CustomPhoneInput'; 
+import { statusOptions } from '../../../constants/staticOptions';
+import focusFirstErrorInput from '../../../utils/focusUtils';
+import { findCurrentStep } from '../../../utils/findCurrentStep'
+import '../../page.module.css';
 
 const Form2 = () => {
     const router = useRouter();
@@ -37,12 +36,22 @@ const Form2 = () => {
         });
     }, [newCompanyData]);
 
+    const inputRefs = {
+        firstName: useRef<HTMLInputElement | null>(null),
+        lastName: useRef<HTMLInputElement | null>(null),
+        email: useRef<HTMLInputElement | null>(null),
+        phone: useRef<HTMLInputElement | null>(null), 
+    };
+
+
+
+
     const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         const { id, value } = e.target;
 
         setFormData2(prevData => ({
-          ...prevData,
-          [id]: value,
+            ...prevData,
+            [id]: value,
         }));
 
         updateNewCompanyDetails({
@@ -51,10 +60,9 @@ const Form2 = () => {
         });
 
         if (value) {
-          setStatus({ text: statusOptions[0].status, variant: statusOptions[0].variant });
+            setStatus({ text: statusOptions[0].status, variant: statusOptions[0].variant });
         }
-      }, [updateNewCompanyDetails, setStatus, formData2]);
-
+    }, [updateNewCompanyDetails, setStatus, formData2]);
 
     const handlePhoneChange = async (value: string) => {
         try {
@@ -63,8 +71,6 @@ const Form2 = () => {
                     ...prevData,
                     phone: value,
                 };
-
-
                 return newData;
             });
 
@@ -78,6 +84,15 @@ const Form2 = () => {
         }
     };
 
+    useEffect(() => {
+        const path = window.location.pathname; 
+        const step = findCurrentStep(path);
+        console.log("step 2>>", step);
+        if (step) {
+          setCurrentStep(step.route); 
+        }
+      }, [setCurrentStep]);
+
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -85,8 +100,7 @@ const Form2 = () => {
         const result = await submitForm2(formData2);
 
         if (result.success) {
-            setCurrentStep('step-2');
-            setCompletedStepIndex(1)
+            setCompletedStepIndex(1);
             setErrors({
                 firstName: '',
                 lastName: '',
@@ -96,10 +110,9 @@ const Form2 = () => {
             router.push(AddFormRoutes.REVIEW_SUBMIT);
         } else {
             setErrors(result.errors);
-
+            focusFirstErrorInput(result.errors, inputRefs);
         }
     };
-
 
     useEffect(() => {
         const countrySelector = document.querySelector('.react-international-phone-country-selector-button');
@@ -109,18 +122,13 @@ const Form2 = () => {
             countrySelector?.setAttribute('style', 'border: 1px solid red');
         } else {
             countrySelector?.setAttribute('style', 'border: 1px solid gainsboro');
-
         }
     }, [errors.phone]);
 
-
     return (
-
         <Container>
             <FormContainer onSubmit={handleSubmit}>
-
-                <StyledParagraph text='Name' />
-
+             <P> Name</P>
                 <AddressContainer>
                     <InputWrapper>
                         <FormInput
@@ -131,27 +139,25 @@ const Form2 = () => {
                             onChange={handleChange}
                             hasError={!!errors.firstName}
                             errorMsg={errors.firstName}
+                            ref={inputRefs.firstName}
                         />
                     </InputWrapper>
 
                     <InputWrapper>
-
-
-                    <FormInput
-                        type="text"
-                        placeholder='Last Name'
-                        id="lastName"
-                        value={formData2.lastName}
-                        onChange={handleChange}
-                        hasError={!!errors.lastName}
-                        errorMsg={errors.lastName}
-                    />
+                        <FormInput
+                            type="text"
+                            placeholder='Last Name'
+                            id="lastName"
+                            value={formData2.lastName}
+                            onChange={handleChange}
+                            hasError={!!errors.lastName}
+                            errorMsg={errors.lastName}
+                            ref={inputRefs.lastName}
+                        />
                     </InputWrapper>
-
-                    
                 </AddressContainer>
 
-                <StyledParagraph text='Email' />
+                <P>Email</P>
                 <FormInput
                     placeholder='Email address'
                     type="email"
@@ -160,19 +166,13 @@ const Form2 = () => {
                     onChange={handleChange}
                     hasError={!!errors.email}
                     errorMsg={errors.email}
+                    ref={inputRefs.email}
                 />
 
-                <label
-                    htmlFor="phone_number"
-                    style={{
-                        margin: '18px 5px 16px 5px',
-                    }}>
-                    Phone
-                </label>
-
+                 <P>Phone</P>
 
                 <div className={`phone-input-container ${errors.phone ? 'error' : ''}`}>
-                    <PhoneInput
+                    <CustomPhoneInput
                         placeholder="Enter phone number"
                         id="phone"
                         value={formData2.phone}
@@ -180,23 +180,21 @@ const Form2 = () => {
                         onChange={handlePhoneChange}
                         inputStyle={{
                             border: errors.phone ? '1px solid red' : '1px solid gainsboro',
-                            height: '36px',
+                            height: '22px',
                             outline: 'none',
                             boxShadow: 'none',
                             width: '100%',
                         }}
+                        ref={inputRefs.phone} 
                     />
                 </div>
 
-                {errors.phone && <p style={{ color: 'red', fontSize: '14px', margin: '5px 0', marginBottom: '20px', marginTop: '10px' }}>{errors.phone}</p>}
+                {errors.phone && <p style={{ color: 'red', fontSize: '12px', margin: '5px 0', marginBottom: '20px', marginTop: '10px' }}>{errors.phone}</p>}
 
                 <Button type="submit">Continue</Button>
-
             </FormContainer>
         </Container>
     );
 };
 
 export default Form2;
-
-

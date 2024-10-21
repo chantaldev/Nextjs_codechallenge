@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { HorizontalBar, StepContainer, StepNumber, StepsStyle, BarandSteps } from '../components/styles_components';
 import { useFormContext } from '../context/formContext';
@@ -25,28 +25,19 @@ const steps = [
   },
 ];
 
-
 export default function StepBar() {
-  const { currentStep, setCurrentStep, formCompleted } = useFormContext(); 
+  const { currentStep, formCompleted } = useFormContext(); 
 
-  useEffect(() => {
-    const path = window.location.pathname; 
-    const step = steps.find(s => path.includes(s.route));
-    if (step) {
-      setCurrentStep(step.route); 
-    }
-  }, [setCurrentStep]);
 
-  const isStepCompleted = (stepIndex) => {
+  const isStepCompleted = (completedStepIndex) => {
     const currentStepIndex = steps.findIndex((step) => step.route === currentStep);
-    return currentStepIndex > stepIndex || (stepIndex === 2 && formCompleted); 
+    return currentStepIndex > completedStepIndex || (completedStepIndex === 2 && formCompleted); 
   };
 
   return (
     <BarandSteps>
       <HorizontalBar>
         {steps.map((step, index) => {
-
           const isBlocked = formCompleted || !isStepCompleted(index) && currentStep !== step.route;
 
           return (
@@ -57,7 +48,7 @@ export default function StepBar() {
                     $isActive={currentStep === step.route} 
                     style={{
                       backgroundColor: 
-                        isStepCompleted(index) ? 'green' : 
+                        isStepCompleted(index) ? 'rgba(74, 222, 128, 1)' : 
                         currentStep === step.route ? 'blue' : 
                         'white',
                       color: 
@@ -74,12 +65,11 @@ export default function StepBar() {
                   </StepNumber>
                 </Link>
               ) : (
-
                 <StepNumber
                   $isActive={currentStep === step.route}
                   style={{
                     backgroundColor: 
-                      isStepCompleted(index) ? 'green' : 
+                      isStepCompleted(index) ? 'rgba(74, 222, 128, 1)' : 
                       currentStep === step.route ? 'blue' : 
                       'white',
                     color: 

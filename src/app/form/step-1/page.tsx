@@ -1,40 +1,20 @@
 "use client";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { AddFormRoutes } from '../../../types';
 import { useRouter } from 'next/navigation';
-import styled from 'styled-components';
-import type { Metadata } from "next";
-import { Input, Select, AddressContainer, P, InputWrapper } from '../../../components/styles_components'
+import { AddressContainer, P, InputWrapper, FormContainer } from '../../../components/styles_components';
 import Button from '../../../components/Button';
 import FormInput from '../../../utils/FormInput';
 import FormSelect from '../../../utils/FormSelect';
-import { companyTypes, states, statusOptions } from '../../../constants/staticOptions'
+import { companyTypes, states, statusOptions } from '../../../constants/staticOptions';
 import { submitForm1 } from '../step-1/actions';
-
-
+import focusFirstErrorInput from '../../../utils/focusUtils';
 import { useFormContext } from '../../../context/formContext';
+import { findCurrentStep } from '../../../utils/findCurrentStep'
 
-
-
-
-// export const metadata: Metadata = {
-//   title: "Step 1",
-//   description: "This is step 1 of the process.",
-// };
-
-
-export const FormContainer = styled.form`
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  margin-top: 25px;
-  max-width: 100%;
-  margin-right: 15px;
-`
 
 
 export default function Form1() {
-
     const router = useRouter();
 
     const {
@@ -57,6 +37,26 @@ export default function Form1() {
         zip: newCompanyData?.zip || '',
     });
 
+    const inputRefs = {
+        companyName: useRef<HTMLInputElement | null>(null),
+        companyType: useRef<HTMLSelectElement | null>(null),
+        address1: useRef<HTMLInputElement | null>(null),
+        address2: useRef<HTMLInputElement | null>(null),
+        city: useRef<HTMLInputElement | null>(null),
+        state: useRef<HTMLSelectElement | null>(null),
+        zip: useRef<HTMLInputElement | null>(null),
+    };
+
+
+    useEffect(() => {
+        const path = window.location.pathname; 
+        const step = findCurrentStep(path);
+        console.log("step 1>>", step);
+        if (step) {
+          setCurrentStep(step.route); 
+        }
+      }, [setCurrentStep]);
+
     useEffect(() => {
         setFormData1({
             companyName: newCompanyData?.companyName || '',
@@ -68,7 +68,6 @@ export default function Form1() {
             zip: newCompanyData?.zip || '',
         });
     }, [newCompanyData]);
-
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
         const { id, value } = e.target;
@@ -92,29 +91,6 @@ export default function Form1() {
         }
     };
 
-    // const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
-    //     const { id, value } = e.target;
-
-    //     setFormData1(prevData => ({
-    //         ...prevData,
-    //         [id]: value,
-    //     }));
-
-    //     if (id === 'companyType' || id === 'state') {
-    //         setSelectedType(value);
-    //     }
-
-    //     updateNewCompanyDetails({
-    //         ...formData1,
-    //         [id]: value,
-    //     });
-
-    //     if (value) {
-    //         setStatus({ text: statusOptions[0].status, variant: statusOptions[0].variant });
-    //     }
-
-    //     return newData;
-    // };
 
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -127,9 +103,7 @@ export default function Form1() {
         });
 
         if (result.success) {
-
-            setCurrentStep('step-1');
-            setCompletedStepIndex(0)
+            setCompletedStepIndex(0);
             router.push(AddFormRoutes.CONTACT_INFO);
             setErrors({
                 companyName: '',
@@ -141,21 +115,22 @@ export default function Form1() {
             });
         } else {
             setErrors(result.errors);
+            focusFirstErrorInput(result.errors, inputRefs);
         }
     };
 
     return (
         <FormContainer>
-            <P >Business Name</P>
+            <P>Business Name</P>
             <FormInput
                 placeholder="Registered business name"
-
                 id="companyName"
                 type="text"
                 value={formData1.companyName}
                 onChange={handleChange}
                 hasError={!!errors.companyName}
                 errorMsg={errors.companyName}
+                ref={inputRefs.companyName} 
             />
  
             <P>Type</P>
@@ -167,9 +142,11 @@ export default function Form1() {
                 title="Select Type of Business"
                 hasError={!!errors.companyType}
                 errorMsg={errors.companyType}
-                label={''} /> 
+                ref={inputRefs.companyType} 
+                label={''} 
+            /> 
 
-             <P>Address</P>
+            <P>Address</P>
             <FormInput
                 placeholder="Address Line 1"
                 id="address1"
@@ -179,6 +156,7 @@ export default function Form1() {
                 hasError={!!errors.address1}
                 errorMsg={errors.address1}
                 aria-required="true"
+                ref={inputRefs.address1} 
             />
             <FormInput
                 placeholder="Address Line 2 (optional)"
@@ -187,6 +165,7 @@ export default function Form1() {
                 value={formData1.address2}
                 onChange={handleChange}
                 aria-required="false"
+                ref={inputRefs.address2} 
             />
 
             <FormInput
@@ -198,12 +177,11 @@ export default function Form1() {
                 hasError={!!errors.city}
                 errorMsg={errors.city}
                 aria-required="true"
+                ref={inputRefs.city} 
             /> 
 
-             <AddressContainer>
-
+            <AddressContainer>
                 <InputWrapper>
-
                     <FormSelect
                         options={states}
                         id="state"
@@ -211,11 +189,13 @@ export default function Form1() {
                         hasError={!!errors.state}
                         errorMsg={errors.state}
                         onChange={handleChange}
-                        title="State" label={''} />
+                        title="State"
+                        ref={inputRefs.state} 
+                        label={''} 
+                    />
                 </InputWrapper>
 
                 <InputWrapper>
-
                     <FormInput
                         type="text"
                         id="zip"
@@ -225,6 +205,7 @@ export default function Form1() {
                         hasError={!!errors.zip}
                         errorMsg={errors.zip}
                         aria-required="true"
+                        ref={inputRefs.zip} 
                     />
                 </InputWrapper>
             </AddressContainer> 
@@ -232,6 +213,5 @@ export default function Form1() {
                 Continue
             </Button>
         </FormContainer>
-
     );
 }

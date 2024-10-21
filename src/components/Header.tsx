@@ -1,17 +1,16 @@
 "use client";
 
 import React from 'react';
-import { StyledHeader, Flex } from './styles_components';
+import { StyledHeader } from './styles_components';
 import StatusText from './Status';
 import { useFormContext } from '../context/formContext';
 
 export default function Nav() {
-  // Si estás usando el contexto, descomenta la línea siguiente
   const { status } = useFormContext(); 
 
   return (
     <StyledHeader>
-          <h4>New Company</h4>
+          <h5>New Company</h5>
           {status.text && <StatusText text={status.text} variant={status.variant} />}
     </StyledHeader>
   );

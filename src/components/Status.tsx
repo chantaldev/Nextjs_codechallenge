@@ -4,7 +4,7 @@ import styled from 'styled-components';
 const StatusContainer = styled.div`
   padding: 7px 7px;
   border-radius: 4px;
-  font-size: 14px;
+  font-size: 12px;
   margin: 10px 30px 10px; 
   background: rgba(128, 128, 128, 0.08);
 ;

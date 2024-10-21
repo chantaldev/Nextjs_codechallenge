@@ -61,6 +61,11 @@
   gap: 16px;
 }
 
+.react-international-phone-country-selector-button {
+  height: 10px;
+  }
+
+  
 .ctas a {
   appearance: none;
   border-radius: 128px;
@@ -163,3 +168,5 @@ a.secondary {
     filter: invert();
   }
 }
+
+

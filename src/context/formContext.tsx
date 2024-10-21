@@ -6,6 +6,7 @@ import {
   newCompanyInitialValuesType,
   NewCompanyType
 } from '../schemas/schemas'
+import  StatusTextProps  from '../components/Status'
 
 
 
@@ -47,12 +48,10 @@ type AddCompanyContextType = {
   setStepCompleted: (stepName: string) => void;
   currentStep: string;
   setCurrentStep: (step: string) => void;
-  goToNextStep: () => void;
-  goToPreviousStep: () => void;
   setCompletedStepIndex: (index: number) => void; 
-  status:any,
-  setStatus: any,
-  completedStepIndex: any;
+  completedStepIndex: number;
+  status: StatusTextProps,
+  setStatus: React.Dispatch<React.SetStateAction<StatusTextProps>>;
   errors: FormErrors; 
   setErrors: React.Dispatch<React.SetStateAction<FormErrors>>;
   selectedType: string; 
@@ -81,7 +80,8 @@ export const FormProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [newFormData, setNewFormData] = useState<newCompanyInitialValuesType>(defaultCompany);
   const [dataLoaded, setDataLoaded] = useState(false);
   const [completedStepIndex, setCompletedStepIndex] = useState(-1);
-  const [status, setStatus] = useState({ text: '', variant: '' });
+  const [status, setStatus] = useState<StatusTextProps>({ text: '', variant: 'yellow' });
+
   const [hide, setHide] = useState(false)
   const [formCompleted, setFormCompleted] = useState(false);
   const [errors, setErrors] = useState<FormErrors>({

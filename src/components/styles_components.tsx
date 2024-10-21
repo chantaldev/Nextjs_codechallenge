@@ -7,11 +7,12 @@ export const StyledHeader = styled.header`
   border-bottom: 2px solid rgba(217, 217, 217, 0.44);
 ;
   padding: 10px; 
-  height: 85px;
+  height: 78px;
+  font-size: 14px;
 
-  h4 {
-    margin-left: 80px;
-    font-weight: 500;
+  h5 {
+    margin-left: 20px;
+    font-weight: bold;
   }
 
   @media (max-width: 600px) {
@@ -28,6 +29,7 @@ export const Section = styled.section`
     max-width:300px;
 
 `
+
 
 //editLink
 export const EditLink = styled.span<{ iseditlink1?: boolean; iseditlink2?: boolean }>`
@@ -54,9 +56,11 @@ export const EditLink = styled.span<{ iseditlink1?: boolean; iseditlink2?: boole
 
 //p 
 export const P = styled.section`
-    margin-top: 25px;
+    margin-top: 15px;
      margin-left: 10px;
      color: rgba(64, 77, 97, 1);
+     font-size: 13px;
+     font-weight: bold;
 
 `
 //Flex
@@ -83,13 +87,13 @@ export const HorizontalBar = styled.div`
   justify-content: space-around;
   margin-top: 50px;
   margin-left: 80px;
-  width: 33px;
-  height: 155px;
+  width: 23px;
+  height: 97px;
   border-radius: 15px;
   background: rgba(217, 217, 217, 0.44);
 
   @media (max-width: 600px) {
-    margin-top: 50px;
+    margin-top: 30px;
     margin-left: 25px;
   }
 `;
@@ -97,11 +101,14 @@ export const HorizontalBar = styled.div`
 export const StepContainer = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
+  margin-top: 3px;
+  margin-bottom: px;
+  padding-top: px;
   cursor: pointer;
-  padding: 9px;
   transition: all 0.3s ease;
   margin-left: 10px;
+  border-bottom-left-radius: 3cap;
+
 `;
 
 
@@ -109,14 +116,15 @@ export const StepNumber = styled.div<{ $isActive?: boolean }>`
   background-color: ${({ $isActive }) => ($isActive ? 'blue' : 'white')};
   color: ${({ $isActive }) => ($isActive ? 'white' : 'black')};
   font-weight: bold;
-  font-size: 14px;
-  width: 27px;
-  height: 27px;
+  font-size: 10px;
+  width: 18px;
+  height: 18px;
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 50%;
   margin-right: 10px;
+  margin-bottom: 15px;
 
   &:hover {
     background-color: ${({ $isActive }) => ($isActive ? '#007FFF' : '#007FFF')};
@@ -167,20 +175,70 @@ export const Container3 = styled.div`
   }
 `;
 
+export const Container4 = styled.div`
+  max-width: 400px; 
+  margin-top:50px;
+
+  @media (max-width: 600px) {
+    max-width: 80%;
+  }
+`;
+
 //form
 export const FormContainer = styled.form`
   display: flex;
   flex: 1;
   flex-direction: column;
-  margin-top: 25px;
+  margin-top: 18px;
   max-width: 100%;
   margin-right: 15px;
+
+
+  .category {
+    display: flex;
+    align-items: center; 
+    margin-bottom: 30px;
+  }
+
+  .info1 {
+    color: gray; 
+    margin-bottom: 20px;
+     
+  }
+
+  .info2 {
+    color: black;
+    margin-left: 60px;
+  }
+  .info3 {
+    margin-left: 113px;
+    padding-bottom: 20px;
+  }
+
+  .info4 {
+    color: black;
+    margin-left: 50px;
+  }
+
+
+  @media (max-width: 600px) {
+    max-width: 100%;
+
+    .info2 {
+    margin-left: 31px;
+  }
+
+  .info3 {
+    margin-left: 94px;
+    padding-bottom: 20px;
+  }
+  }
 `
 
 // input
 export const ErrorMsg = styled.div`
   color: red;
-  font-size: 14px;
+  font-size: 10px;
   position: relative;
   left: 4; 
   margin-left: 8px;
@@ -195,29 +253,50 @@ export const ErrorMsg = styled.div`
 
 export const Input = styled.input<{ $hasError?: boolean }>`
   border: 1px solid ${({ $hasError }) => ($hasError ? 'red' : 'rgba(225, 227, 230, 1)')};
-  padding: 6px ;
-  margin: 10px 5px; 
+  padding: 3px ;
+  margin: 6px 5px; 
   border-radius: 5px;
   color: gray;
   flex: 1;
+  height: 70px;
+  font-size: 12px;
+
+
+    // Cambiar el tamaño de la fuente del placeholder
+    &::placeholder {
+    font-size: 12px; /* Cambia esto al tamaño que desees */
+    color: rgba(128, 128, 128, 0.7);
+    left: 4;  /* Puedes cambiar el color si lo deseas */
+  }
+
 
   &:focus {
     outline: none;
     border-color: ${({ $hasError }) => ($hasError ? 'red' : 'blue')};
   }
+
+  @media (max-width: 600px) {
+  height: 50px; // O cualquier otro valor que necesites
+}
 `;
 
 export const Container = styled.div`
-  max-width: 400px; 
+  max-width: 410px; 
 `;
 
 export const Select = styled.select<{ $hasError?: boolean }>`
   border: 1px solid ${({ $hasError }) => ($hasError ? 'red' : 'rgba(225, 227, 230, 1)')};
-  padding: 6px;
+  padding: 3px;
   margin: 10px 5px; 
   border-radius: 5px;
   color: gray;
+  font-size: 12px;
   /* flex: 1;  */
+
+  label {
+    font-size: 10px; /* Cambia esto al tamaño que desees */
+    color: rgba(128, 128, 128, 0.7); /* Puedes cambiar el color si lo deseas */
+  }
 
   &:focus {
     outline: none;
@@ -227,8 +306,8 @@ export const Select = styled.select<{ $hasError?: boolean }>`
 
 export const AddressContainer = styled.div`
   display: flex;
-  /* gap: 20px; */
-  width: 50%;
+  gap: 0px;
+  width: 100%;
   box-sizing: border-box;
 `;
 
@@ -237,7 +316,6 @@ export const InputWrapper = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
-  
 
 `;
 // Button
@@ -255,6 +333,8 @@ export const Button = styled.button`
   align-items: center; 
   width: 100%; 
   margin-bottom: 50px;
+  height: 25px;
+  font-size: 13;
   
   
   &:hover {
