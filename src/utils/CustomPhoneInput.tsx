@@ -8,12 +8,34 @@ type CustomPhoneInputProps = {
   defaultCountry: string;
   onChange: (value: string) => Promise<void>;
   inputStyle?: React.CSSProperties;
+  countrySelectorStyleProps?: {
+    buttonStyle?: React.CSSProperties;
+    flagStyle?: React.CSSProperties;
+  };
 };
-
 
 const CustomPhoneInput = forwardRef<HTMLInputElement, CustomPhoneInputProps>(
   (props, ref) => {
-    return <PhoneInput {...props} ref={ref as LegacyRef<PhoneInputRefType> | undefined} />;
+    const { countrySelectorStyleProps, ...restProps } = props;
+
+    return (
+      <PhoneInput
+        {...restProps}
+        countrySelectorStyleProps={{
+          buttonStyle: {
+            height: 22,
+            ...countrySelectorStyleProps?.buttonStyle, 
+          },
+          flagStyle: {
+            height: 18,
+            marginRight: '5px',
+            display: 'inline-block',
+            ...countrySelectorStyleProps?.flagStyle, 
+          },
+        }}
+        ref={ref as LegacyRef<PhoneInputRefType> | undefined}
+      />
+    );
   }
 );
 

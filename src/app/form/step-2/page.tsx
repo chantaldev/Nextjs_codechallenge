@@ -114,17 +114,6 @@ const Form2 = () => {
         };
     };
 
-    useEffect(() => {
-        const countrySelector = document.querySelector('.react-international-phone-country-selector-button');
-
-        if (errors.phone) {
-            countrySelector?.setAttribute('style', 'border-right: none');
-            countrySelector?.setAttribute('style', 'border: 1px solid red');
-        } else {
-            countrySelector?.setAttribute('style', 'border: 1px solid gainsboro');
-        }
-    }, [errors.phone]);
-
     return (
         <Container>
             <FormContainer onSubmit={handleSubmit}>
@@ -171,7 +160,7 @@ const Form2 = () => {
 
                 <P>Phone</P>
 
-                <div className={`phone-input-container ${errors.phone ? 'error' : ''}`}>
+                <div style={{ marginTop: '5px'}}>
                     <CustomPhoneInput
                         placeholder="Enter phone number"
                         id="phone"
@@ -182,11 +171,24 @@ const Form2 = () => {
                             border: errors.phone ? '1px solid red' : '1px solid gainsboro',
                             outline: 'none',
                             boxShadow: 'none',
-                            width: '100%',
+                            width: '83%',
                             height: '22px',
                         }}
                         ref={inputRefs.phone}
+                        countrySelectorStyleProps={{
+                            buttonStyle: {
+                              border: errors.phone ? '1px solid red' : '1px solid gainsboro',
+                              height: 22, 
+                              padding: '0 px',  
+                              borderRight: errors?.phone ? "white" : 'none', 
+                            },
+                            flagStyle: {
+                              height: 17,
+                              marginRight: '5px',  
+                            },
+                          }}
                     />
+
                 </div>
 
                 {errors.phone && <p style={{ color: 'red', fontSize: '12px', margin: '5px 0', marginBottom: '20px', marginTop: '10px' }}>{errors.phone}</p>}
